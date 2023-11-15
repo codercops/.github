@@ -32,5 +32,3 @@ Participate in virtual events, workshops, and webinars hosted by Coder Cops. Lea
 
 Thank you for your interest in Coder Cops! Join our community today and unlock a world of opportunities for collaboration, learning, and growth in the tech industry.
 
-For more information, please visit our website [www.codercops.tech](https://www.codercops.tech).
-

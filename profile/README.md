@@ -1,3 +1,5 @@
 # Build the Next Big Thing in AI
 
-Build decentralized AI agents and showcase your skills to mentors, judges & investors. We create powerful digital solutions that help businesses thrive.
+We're CODERCOPS,
+Build the Next Big Thing.
+India based tech studio empowering businesses with cutting-edge AI and web solutions.

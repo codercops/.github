@@ -1,0 +1,51 @@
+name: "🤝 Request to Join CODERCOPS"
+description: "Request membership in the CODERCOPS organization. You must have at least 1 merged PR in any codercops repo."
+title: "Join Request: @"
+labels: ["join-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome! 👋
+        
+        Thanks for your interest in joining CODERCOPS. Before you apply, make sure you have **at least 1 merged pull request** in any [codercops repository](https://github.com/codercops).
+        
+        **New here?** Check out issues labeled [`good first issue`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen&type=issues) to get started!
+
+  - type: input
+    id: github-username
+    attributes:
+      label: "GitHub Username"
+      description: "Your exact GitHub username (case-sensitive)"
+      placeholder: "e.g. octocat"
+    validations:
+      required: true
+
+  - type: textarea
+    id: contributions
+    attributes:
+      label: "Your Contributions"
+      description: "Link to your merged PR(s) in any codercops repo"
+      placeholder: |
+        e.g. https://github.com/codercops/ogcops/pull/16
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Why do you want to join?"
+      description: "Tell us a bit about yourself and what you'd like to work on (optional)"
+      placeholder: "I'm interested in contributing to..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: "Acknowledgment"
+      options:
+        - label: "I have at least 1 merged PR in a codercops repository"
+          required: true
+        - label: "I agree to follow the [Code of Conduct](https://github.com/codercops/.github/blob/main/CODE_OF_CONDUCT.md)"
+          required: true

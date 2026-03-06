@@ -22,7 +22,7 @@ We welcome contributors of all skill levels! Here's how to get involved:
 1. **Find an issue** — Look for [`good first issue`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen&type=issues) or [`help wanted`](https://github.com/search?q=org%3Acodercops+label%3A%22help+wanted%22+state%3Aopen&type=issues) labels across our repos
 2. **Fork & contribute** — All public repos are open for contributions via pull requests
 3. **Join discussions** — Share ideas, ask questions, or show what you've built in [Discussions](https://github.com/codercops/codercops-discussions/discussions)
-4. **Join the team** — Request to join the [Members team](https://github.com/orgs/codercops/teams/members) to be part of the org
+4. **Become a member** — Got a merged PR? [**Request to join CODERCOPS →**](https://github.com/codercops/.github/issues/new?template=join-request.yml)
 
 ### Ways to Contribute
 

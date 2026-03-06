@@ -34,6 +34,7 @@ jobs:
         id: verify-user
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
           script: |
             const username = '${{ steps.extract.outputs.username }}';
             try {
@@ -48,6 +49,7 @@ jobs:
         if: steps.verify-user.outputs.exists == 'true'
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
           script: |
             const username = '${{ steps.extract.outputs.username }}';
             

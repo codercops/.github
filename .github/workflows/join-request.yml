@@ -1,243 +1,198 @@
 name: Process Join Request
 
+# Two stages:
+#   1. When a join request is opened, check the username and merged PRs, then
+#      either close it with an explanation or mark it `awaiting-approval`.
+#   2. Nobody is invited until an org admin adds the `approved` label.
+#
+# Never put issue content into a script with ${{ }}. Anything the requester
+# typed is read from the event payload inside the script, validated, and
+# passed between steps through env vars only.
+
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]
+
+permissions:
+  issues: write
 
 jobs:
-  process-join-request:
-    if: contains(github.event.issue.labels.*.name, 'join-request')
+  triage:
+    if: github.event.action == 'opened' && contains(github.event.issue.labels.*.name, 'join-request')
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-
     steps:
-      - name: Extract GitHub username from issue body
-        id: extract
+      - name: Check request
+        id: check
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
           script: |
-            const body = context.payload.issue.body || '';
-            
-            // Extract username from the form field
-            const usernameMatch = body.match(/### GitHub Username\s*\n\s*\n\s*(.+)/);
-            if (!usernameMatch) {
-              core.setFailed('Could not extract GitHub username from issue body');
+            const match = (context.payload.issue.body || '').match(/### GitHub Username\s*\n\s*\n\s*(.+)/);
+            const username = match ? match[1].trim().replace(/^@/, '') : '';
+            if (!/^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/.test(username)) {
+              core.setOutput('decision', 'invalid');
               return;
             }
-            
-            const username = usernameMatch[1].trim().replace(/^@/, '');
             core.setOutput('username', username);
-            console.log(`Extracted username: ${username}`);
 
-      - name: Verify user exists on GitHub
-        id: verify-user
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
             try {
               await github.rest.users.getByUsername({ username });
-              core.setOutput('exists', 'true');
-            } catch (e) {
-              core.setOutput('exists', 'false');
+            } catch {
+              core.setOutput('decision', 'not-found');
+              return;
             }
 
-      - name: Check for merged PRs in codercops org
-        id: check-prs
-        if: steps.verify-user.outputs.exists == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            
-            // Search for merged PRs by this user in codercops org
-            const { data } = await github.rest.search.issuesAndPullRequests({
-              q: `org:codercops type:pr is:merged author:${username}`,
-              per_page: 5
-            });
-            
-            const count = data.total_count;
-            core.setOutput('merged_count', count.toString());
-            
-            if (count > 0) {
-              // Collect PR links for the comment
-              const prLinks = data.items.slice(0, 5).map(pr => 
-                `- [${pr.title}](${pr.html_url})`
-              ).join('\n');
-              core.setOutput('pr_links', prLinks);
-            }
-            
-            console.log(`Found ${count} merged PRs for ${username}`);
-
-      - name: Check if already a member
-        id: check-member
-        if: steps.verify-user.outputs.exists == 'true' && steps.check-prs.outputs.merged_count != '0'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
             try {
-              const { data } = await github.rest.orgs.getMembershipForUser({
-                org: 'codercops',
-                username
-              });
-              core.setOutput('is_member', data.state === 'active' ? 'true' : 'false');
-            } catch (e) {
-              core.setOutput('is_member', 'false');
+              const { data } = await github.rest.orgs.getMembershipForUser({ org: 'codercops', username });
+              if (data.state === 'active') {
+                core.setOutput('decision', 'member');
+                return;
+              }
+            } catch {
+              // Not a member yet.
             }
 
-      - name: Invite user to org and team
+            const { data: prs } = await github.rest.search.issuesAndPullRequests({
+              q: `org:codercops type:pr is:merged is:public author:${username}`,
+              per_page: 10,
+            });
+            if (prs.total_count === 0) {
+              core.setOutput('decision', 'needs-pr');
+              return;
+            }
+            core.setOutput('decision', 'pending');
+            core.setOutput('count', String(prs.total_count));
+            core.setOutput('links', prs.items.map((pr) => `- ${pr.html_url}`).join('\n'));
+
+      - name: Reply
+        uses: actions/github-script@v7
+        env:
+          DECISION: ${{ steps.check.outputs.decision }}
+          USERNAME: ${{ steps.check.outputs.username }}
+          COUNT: ${{ steps.check.outputs.count }}
+          LINKS: ${{ steps.check.outputs.links }}
+        with:
+          script: |
+            const { DECISION, USERNAME, COUNT, LINKS } = process.env;
+            const issue_number = context.issue.number;
+            const repo = context.repo;
+            const reply = (body) => github.rest.issues.createComment({ ...repo, issue_number, body });
+            const close = (labels) => github.rest.issues.update({ ...repo, issue_number, state: 'closed', labels });
+
+            switch (DECISION) {
+              case 'invalid':
+                await reply('That does not look like a valid GitHub username. Please open a new request with your exact username.');
+                await close(['join-request', 'invalid']);
+                break;
+              case 'not-found':
+                await reply(`The GitHub username \`${USERNAME}\` does not exist. Please check for typos and open a new request.`);
+                await close(['join-request', 'invalid']);
+                break;
+              case 'member':
+                await reply(`@${USERNAME} is already a member of CODERCOPS. Nothing to do here.`);
+                await close(['join-request']);
+                break;
+              case 'needs-pr':
+                await reply([
+                  `Hey @${USERNAME}, we couldn't find any merged pull requests from you in the codercops repos yet.`,
+                  '',
+                  'Pick an issue labeled [`good first issue`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen&type=issues), open a PR, and once it is merged you are welcome to apply again.',
+                ].join('\n'));
+                await close(['join-request', 'needs-pr']);
+                break;
+              case 'pending':
+                await reply([
+                  `Thanks @${USERNAME}! We found ${COUNT} merged PR(s) from you:`,
+                  '',
+                  LINKS,
+                  '',
+                  'A maintainer reviews every request by hand, so this can take a few days. cc @anurag629',
+                ].join('\n'));
+                await github.rest.issues.addLabels({ ...repo, issue_number, labels: ['awaiting-approval'] });
+                break;
+              default:
+                core.setFailed(`Unexpected decision: ${DECISION}`);
+            }
+
+  invite:
+    if: >-
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'approved' &&
+      github.event.issue.state == 'open' &&
+      contains(github.event.issue.labels.*.name, 'join-request')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invite approved requester
         id: invite
-        if: |
-          steps.verify-user.outputs.exists == 'true' && 
-          steps.check-prs.outputs.merged_count != '0' && 
-          steps.check-member.outputs.is_member != 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
           script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            
-            // Send org invitation with Members team
+            // Only an org admin's approval counts.
+            const approver = context.payload.sender.login;
+            core.setOutput('approver', approver);
+            let isAdmin = false;
             try {
-              // Get the Members team ID
-              const { data: team } = await github.rest.teams.getByName({
-                org: 'codercops',
-                team_slug: 'members'
-              });
-              
-              // Invite to org with team membership
-              await github.rest.orgs.createInvitation({
-                org: 'codercops',
-                invitee_id: (await github.rest.users.getByUsername({ username })).data.id,
-                team_ids: [team.id]
-              });
-              
-              core.setOutput('invited', 'true');
-              console.log(`Invitation sent to ${username}`);
-            } catch (e) {
-              core.setOutput('invited', 'false');
-              core.setOutput('error', e.message);
-              console.log(`Failed to invite: ${e.message}`);
+              const { data } = await github.rest.orgs.getMembershipForUser({ org: 'codercops', username: approver });
+              isAdmin = data.state === 'active' && data.role === 'admin';
+            } catch {}
+            if (!isAdmin) {
+              core.setOutput('result', 'not-admin');
+              return;
             }
 
-      - name: Comment — user not found
-        if: steps.verify-user.outputs.exists == 'false'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `❌ **User not found**\n\nThe GitHub username \`${username}\` does not exist. Please check for typos and open a new request with the correct username.`
-            });
-            await github.rest.issues.update({
-              ...context.repo,
-              issue_number: context.issue.number,
-              state: 'closed',
-              labels: ['join-request', 'invalid']
-            });
+            const match = (context.payload.issue.body || '').match(/### GitHub Username\s*\n\s*\n\s*(.+)/);
+            const username = match ? match[1].trim().replace(/^@/, '') : '';
+            if (!/^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/.test(username)) {
+              core.setOutput('result', 'failed');
+              return;
+            }
+            core.setOutput('username', username);
 
-      - name: Comment — no merged PRs
-        if: steps.verify-user.outputs.exists == 'true' && steps.check-prs.outputs.merged_count == '0'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: [
-                `👋 Hey @${username}!`,
-                ``,
-                `We couldn't find any merged pull requests from you in the codercops org.`,
-                ``,
-                `**To join, you need at least 1 merged PR.** Here's how to get started:`,
-                `- Browse [\`good first issue\`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen&type=issues) tickets`,
-                `- Pick one, fork the repo, and submit a PR`,
-                `- Once your PR is merged, open a new join request!`,
-                ``,
-                `We look forward to your contribution! 🚀`
-              ].join('\n')
-            });
-            await github.rest.issues.update({
-              ...context.repo,
-              issue_number: context.issue.number,
-              state: 'closed',
-              labels: ['join-request', 'needs-pr']
-            });
+            try {
+              const { data: team } = await github.rest.teams.getByName({ org: 'codercops', team_slug: 'members' });
+              const { data: user } = await github.rest.users.getByUsername({ username });
+              await github.rest.orgs.createInvitation({ org: 'codercops', invitee_id: user.id, team_ids: [team.id] });
+              core.setOutput('result', 'invited');
+            } catch (e) {
+              core.warning(`Invite failed: ${e.message}`);
+              core.setOutput('result', 'failed');
+            }
 
-      - name: Comment — already a member
-        if: steps.check-member.outputs.is_member == 'true'
+      - name: Reply
         uses: actions/github-script@v7
+        env:
+          RESULT: ${{ steps.invite.outputs.result }}
+          USERNAME: ${{ steps.invite.outputs.username }}
+          APPROVER: ${{ steps.invite.outputs.approver }}
         with:
           script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `✅ Hey @${username}, you're already a member of CODERCOPS! No action needed.`
-            });
-            await github.rest.issues.update({
-              ...context.repo,
-              issue_number: context.issue.number,
-              state: 'closed'
-            });
+            const { RESULT, USERNAME, APPROVER } = process.env;
+            const issue_number = context.issue.number;
+            const repo = context.repo;
+            const removeLabel = (name) =>
+              github.rest.issues.removeLabel({ ...repo, issue_number, name }).catch(() => {});
 
-      - name: Comment — invitation sent
-        if: steps.invite.outputs.invited == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            const prLinks = `${{ steps.check-prs.outputs.pr_links }}`;
-            const count = '${{ steps.check-prs.outputs.merged_count }}';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: [
-                `🎉 **Welcome to CODERCOPS, @${username}!**`,
-                ``,
-                `We found **${count} merged PR(s)** from you:`,
-                prLinks,
-                ``,
-                `An invitation has been sent to your GitHub account. Please check your email or [GitHub notifications](https://github.com/notifications) to accept it.`,
-                ``,
-                `Once accepted, you'll be part of the **Members** team. Happy contributing! 🚀`
-              ].join('\n')
-            });
-            await github.rest.issues.update({
-              ...context.repo,
-              issue_number: context.issue.number,
-              state: 'closed',
-              labels: ['join-request', 'approved']
-            });
-
-      - name: Comment — invitation failed
-        if: steps.invite.outputs.invited == 'false' && steps.verify-user.outputs.exists == 'true' && steps.check-prs.outputs.merged_count != '0' && steps.check-member.outputs.is_member != 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const username = '${{ steps.extract.outputs.username }}';
-            const error = '${{ steps.invite.outputs.error }}';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: [
-                `⚠️ Hey @${username}, we verified your contributions but ran into an issue sending the invitation.`,
-                ``,
-                `A maintainer will follow up manually. Sorry for the inconvenience!`,
-                ``,
-                `cc @anurag629`
-              ].join('\n')
-            });
-            await github.rest.issues.update({
-              ...context.repo,
-              issue_number: context.issue.number,
-              labels: ['join-request', 'needs-manual-review']
-            });
+            if (RESULT === 'not-admin') {
+              await removeLabel('approved');
+              core.notice(`Ignored approval from ${APPROVER}: not an org admin.`);
+            } else if (RESULT === 'invited') {
+              await github.rest.issues.createComment({
+                ...repo,
+                issue_number,
+                body: [
+                  `Welcome to CODERCOPS, @${USERNAME}!`,
+                  '',
+                  'An invitation is on its way. Check your email or [GitHub notifications](https://github.com/notifications) to accept it.',
+                ].join('\n'),
+              });
+              await removeLabel('awaiting-approval');
+              await github.rest.issues.update({ ...repo, issue_number, state: 'closed' });
+            } else {
+              await github.rest.issues.createComment({
+                ...repo,
+                issue_number,
+                body: `Something went wrong sending the invite. @${APPROVER} will follow up.`,
+              });
+              await github.rest.issues.addLabels({ ...repo, issue_number, labels: ['needs-manual-review'] });
+            }

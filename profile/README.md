@@ -49,7 +49,7 @@ Or browse every [open `hacktoberfest` issue](https://github.com/search?q=org%3Ac
 
 **Goodies:** the top 5 contributors this October get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across the three repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The live leaderboard is on our [Discord](https://discord.gg/mpGdJyjaRQ).
 
-These goodies come from CODERCOPS through our own open source program. They're separate from Hacktoberfest, so anything Hacktoberfest itself gives out is a different thing with its own rules.
+These goodies come from CODERCOPS through our own open source program. They're separate from Hacktoberfest, so anything Hacktoberfest itself gives out is a different thing with its own rules. Only PRs for issues that were assigned to you count, and the full rules (AI tools, spam, reviews) are in each repo's CONTRIBUTING.md.
 
 ---
 

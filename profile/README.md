@@ -48,7 +48,7 @@ Our projects are taking part in Hacktoberfest this October, and we've lined up b
 
 Or browse every [open `hacktoberfest` issue](https://github.com/search?q=org%3Acodercops+label%3Ahacktoberfest+state%3Aopen+no%3Aassignee&type=issues) across the org. Comment on an issue to get assigned before you start.
 
-**Goodies:** CODERCOPS October 2026 is our own contributor program for this month. The top 5 contributors get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across these four repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The [live leaderboard](https://codercops-discord-bot.copscoder.workers.dev/leaderboard/2026-10) shows where everyone stands, and it's on our [Discord](https://discord.gg/mpGdJyjaRQ) too.
+**Goodies:** CODERCOPS October 2026 is our own contributor program for this month. The top 5 contributors get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across these four repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The [live leaderboard](https://oss.codercops.com/leaderboard/2026-10) shows where everyone stands, and everyone on it gets a card to share. It's on our [Discord](https://discord.gg/mpGdJyjaRQ) too.
 
 These goodies come from CODERCOPS through our own open source program. They're separate from Hacktoberfest, so anything Hacktoberfest itself gives out is a different thing with its own rules. Only PRs for issues that were assigned to you count, and the full rules (AI tools, spam, reviews) are in each repo's CONTRIBUTING.md.
 

@@ -16,6 +16,19 @@ We're an India-based tech studio building open source tools for developers. We b
 
 ---
 
+### 📚 Learning Roadmaps
+
+Free, structured roadmaps you can follow at your own pace. Log your days with `/checkin` on our [Discord](https://discord.gg/wkq8h3VWr3) and keep a streak going with other learners.
+
+| Roadmap | What you get | Link |
+|---------|--------------|------|
+| **100 Days of AI Engineer** | A project-driven path to becoming an AI engineer, with 7 projects along the way. | [Repo](https://github.com/anurag629/100DaysOfAIEngineer) |
+| **System Design in 60 Days** | Reading, drills and a lab with starter code every day, about 4 hours each. | [Site](https://anurag629.github.io/system-design-60-days/) · [Repo](https://github.com/anurag629/system-design-60-days) |
+| **50 Days of Data Science** | Python, SQL and machine learning from the basics, one topic a day. | [Repo](https://github.com/anurag629/50-Days-Data-Science) |
+| **Gen AI Engineer in 3 Weeks** | An intensive 21-day plan covering transformers, RAG and agents. | [Repo](https://github.com/anurag629/gen_ai_engineer) |
+
+---
+
 ### 💼 Hire developers, or get hired
 
 [codercops.com](https://www.codercops.com) is our chat-first hiring platform. Tell it what you do and it writes your public profile, with a shareable link, a PDF résumé and a social card. Companies describe a role in plain words and post it in minutes. It's free for builders, and free to post, apply and message.

@@ -16,6 +16,14 @@ We're an India-based tech studio building open source tools for developers. We b
 
 ---
 
+### 💼 Hire developers, or get hired
+
+[codercops.com](https://www.codercops.com) is our chat-first hiring platform. Tell it what you do and it writes your public profile, with a shareable link, a PDF résumé and a social card. Companies describe a role in plain words and post it in minutes. It's free for builders, and free to post, apply and message.
+
+[Build your profile](https://app.codercops.com/signup) · [Browse open roles](https://app.codercops.com/jobs) · [For companies](https://www.codercops.com/for-companies)
+
+---
+
 ### 🎃 Hacktoberfest 2026
 
 All three projects are taking part in Hacktoberfest this October, and we've lined up beginner-friendly issues in each one. Start with the pinned guide in the repo you like:
@@ -26,6 +34,8 @@ All three projects are taking part in Hacktoberfest this October, and we've line
 
 Or browse every [open `hacktoberfest` issue](https://github.com/search?q=org%3Acodercops+label%3Ahacktoberfest+state%3Aopen+no%3Aassignee&type=issues) across the org. Comment on an issue to get assigned before you start.
 
+**Goodies:** the top 5 contributors this October get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across the three repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The live leaderboard is on our [Discord](https://discord.gg/mpGdJyjaRQ).
+
 ---
 
 ### 🤝 Join the Community
@@ -35,7 +45,8 @@ We welcome contributors of all skill levels! Here's how to get involved:
 1. **Find an issue** — Look for [`good first issue`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen&type=issues) or [`help wanted`](https://github.com/search?q=org%3Acodercops+label%3A%22help+wanted%22+state%3Aopen&type=issues) labels across our repos
 2. **Fork & contribute** — All public repos are open for contributions via pull requests
 3. **Join discussions** — Share ideas, ask questions, or show what you've built in [Discussions](https://github.com/codercops/codercops-discussions/discussions)
-4. **Become a member:** once you have a merged PR, you can [**request to join CODERCOPS**](https://github.com/codercops/.github/issues/new?template=join-request.yml). A maintainer reviews every request.
+4. **Chat on Discord:** ask questions and meet other contributors on our [Discord server](https://discord.gg/mpGdJyjaRQ). Issue claims still happen on GitHub.
+5. **Become a member:** once you have a merged PR, you can [**request to join CODERCOPS**](https://github.com/codercops/.github/issues/new?template=join-request.yml). A maintainer reviews every request.
 
 ### Ways to Contribute
 
@@ -51,6 +62,7 @@ We welcome contributors of all skill levels! Here's how to get involved:
 
 - 🌐 Website: [codercops.com](https://www.codercops.com)
 - 📧 Email: support@codercops.com
+- 🎧 Discord: [Join the server](https://discord.gg/mpGdJyjaRQ)
 - 💬 Discussions: [GitHub Discussions](https://github.com/codercops/codercops-discussions/discussions)
 
 ---

@@ -39,15 +39,16 @@ Free, structured roadmaps you can follow at your own pace. Log your days with `/
 
 ### 🎃 Hacktoberfest 2026
 
-All three projects are taking part in Hacktoberfest this October, and we've lined up beginner-friendly issues in each one. Start with the pinned guide in the repo you like:
+Our projects are taking part in Hacktoberfest this October, and we've lined up beginner-friendly issues in each one. Start with the pinned guide in the repo you like:
 
 - **OGCOPS:** [start here](https://github.com/codercops/ogcops/issues/88). New template ideas are in [#5](https://github.com/codercops/ogcops/issues/5).
 - **ChatCops:** [start here](https://github.com/codercops/chatcops/issues/73)
 - **toolbelt:** [start here](https://github.com/codercops/toolbelt/issues/101). Build a whole new tool from the [`new tool`](https://github.com/codercops/toolbelt/issues?q=is%3Aissue+is%3Aopen+label%3A%22new+tool%22) issues.
+- **discord-bot:** the bot behind our Discord server, a small TypeScript Worker. [Open issues](https://github.com/codercops/discord-bot/issues?q=is%3Aissue+is%3Aopen+no%3Aassignee).
 
 Or browse every [open `hacktoberfest` issue](https://github.com/search?q=org%3Acodercops+label%3Ahacktoberfest+state%3Aopen+no%3Aassignee&type=issues) across the org. Comment on an issue to get assigned before you start.
 
-**Goodies:** the top 5 contributors this October get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across the three repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The live leaderboard is on our [Discord](https://discord.gg/mpGdJyjaRQ).
+**Goodies:** CODERCOPS October 2026 is our own contributor program for this month. The top 5 contributors get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across these four repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The [live leaderboard](https://codercops-discord-bot.copscoder.workers.dev/leaderboard/2026-10) shows where everyone stands, and it's on our [Discord](https://discord.gg/mpGdJyjaRQ) too.
 
 These goodies come from CODERCOPS through our own open source program. They're separate from Hacktoberfest, so anything Hacktoberfest itself gives out is a different thing with its own rules. Only PRs for issues that were assigned to you count, and the full rules (AI tools, spam, reviews) are in each repo's CONTRIBUTING.md.
 

@@ -54,6 +54,12 @@ These goodies come from CODERCOPS through our own open source program. They're s
 
 ---
 
+### ✍️ Written by contributors
+
+Wrote about contributing to one of our projects, or about something you built with them? Post the link in our [Discord](https://discord.gg/mpGdJyjaRQ). We list contributor write-ups here and share the good ones from our X and LinkedIn pages.
+
+---
+
 ### 🤝 Join the Community
 
 We welcome contributors of all skill levels! Here's how to get involved:

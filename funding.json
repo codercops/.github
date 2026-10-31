@@ -1,0 +1,177 @@
+{
+  "$schema": "https://fundingjson.org/schema/v1.1.0.json",
+  "version": "v1.1.0",
+  "entity": {
+    "type": "organisation",
+    "role": "owner",
+    "name": "CODERCOPS",
+    "email": "hello@codercops.com",
+    "description": "CODERCOPS is a small software studio in India. We build and maintain four MIT-licensed developer tools: an embeddable AI chat widget, an OG image generator, a set of in-browser developer utilities, and the bot that runs our contributor community. All of them are free to use and self-host. We don't sell them or a hosted version of them. Close to 60 people have had pull requests merged across the four repos, many of them first-time open source contributors.",
+    "webpageUrl": {
+      "url": "https://oss.codercops.com",
+      "wellKnown": "https://oss.codercops.com/.well-known/funding-manifest-urls"
+    }
+  },
+  "projects": [
+    {
+      "guid": "chatcops",
+      "name": "ChatCops",
+      "description": "An embeddable AI chatbot widget you add to any website with one script tag. It works with Claude, OpenAI and Gemini, and comes with lead capture, a knowledge base and translations. Published on npm as @chatcops/widget, @chatcops/server and @chatcops/core.",
+      "webpageUrl": {
+        "url": "https://chat.codercops.com",
+        "wellKnown": "https://chat.codercops.com/.well-known/funding-manifest-urls"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/codercops/chatcops",
+        "wellKnown": "https://github.com/codercops/chatcops/blob/dev/.well-known/funding-manifest-urls"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "ai",
+        "chatbot",
+        "widget",
+        "typescript",
+        "llm"
+      ]
+    },
+    {
+      "guid": "ogcops",
+      "name": "OGCOPS",
+      "description": "A free Open Graph image generator with over 100 templates, previews for 8 platforms and a free REST API. No login and no watermarks.",
+      "webpageUrl": {
+        "url": "https://og.codercops.com",
+        "wellKnown": "https://og.codercops.com/.well-known/funding-manifest-urls"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/codercops/ogcops",
+        "wellKnown": "https://github.com/codercops/ogcops/blob/dev/.well-known/funding-manifest-urls"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "open-graph",
+        "image-generation",
+        "seo",
+        "typescript",
+        "web"
+      ]
+    },
+    {
+      "guid": "toolbelt",
+      "name": "toolbelt",
+      "description": "Developer tools that run entirely in the browser, so nothing is uploaded: a JSON formatter, JWT decoder, Base64, regex tester, invoice generator and more.",
+      "webpageUrl": {
+        "url": "https://tools.codercops.com",
+        "wellKnown": "https://tools.codercops.com/.well-known/funding-manifest-urls"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/codercops/toolbelt",
+        "wellKnown": "https://github.com/codercops/toolbelt/blob/develop/.well-known/funding-manifest-urls"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "developer-tools",
+        "privacy",
+        "json",
+        "web",
+        "typescript"
+      ]
+    },
+    {
+      "guid": "discord-bot",
+      "name": "CODERCOPS community bot",
+      "description": "The Cloudflare Worker behind our contributor community. It posts starter issues, releases and merged PRs to Discord and runs the public monthly contributor leaderboard at oss.codercops.com.",
+      "webpageUrl": {
+        "url": "https://oss.codercops.com",
+        "wellKnown": "https://oss.codercops.com/.well-known/funding-manifest-urls"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/codercops/discord-bot",
+        "wellKnown": "https://github.com/codercops/discord-bot/blob/develop/.well-known/funding-manifest-urls"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "community",
+        "discord",
+        "github",
+        "cloudflare-workers",
+        "typescript"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "github-sponsors",
+        "type": "payment-provider",
+        "address": "https://github.com/sponsors/anurag629",
+        "description": "GitHub Sponsors, one-time or monthly."
+      },
+      {
+        "guid": "bank",
+        "type": "bank",
+        "address": "hello@codercops.com",
+        "description": "Bank transfer to our account in India. Write to us for the details."
+      },
+      {
+        "guid": "paypal",
+        "type": "payment-provider",
+        "address": "https://www.paypal.com/paypalme/codercops"
+      },
+      {
+        "guid": "buymeacoffee",
+        "type": "payment-provider",
+        "address": "https://buymeacoffee.com/anurag629"
+      }
+    ],
+    "plans": [
+      {
+        "guid": "maintainer-time",
+        "status": "active",
+        "name": "Maintainer time",
+        "description": "Paid hours for reviewing pull requests, triaging issues, mentoring new contributors and shipping releases across the four projects.",
+        "amount": 12000,
+        "currency": "USD",
+        "frequency": "yearly",
+        "channels": [
+          "github-sponsors",
+          "bank"
+        ]
+      },
+      {
+        "guid": "infrastructure",
+        "status": "active",
+        "name": "Hosting and infrastructure",
+        "description": "Cloudflare Workers, storage, domains and the AI API usage behind the public demos.",
+        "amount": 1200,
+        "currency": "USD",
+        "frequency": "yearly",
+        "channels": [
+          "github-sponsors",
+          "bank"
+        ]
+      },
+      {
+        "guid": "any-amount",
+        "status": "active",
+        "name": "Any amount",
+        "description": "Chip in whatever you like, once or every month.",
+        "amount": 0,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "github-sponsors",
+          "paypal",
+          "buymeacoffee"
+        ]
+      }
+    ]
+  }
+}

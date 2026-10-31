@@ -1,0 +1,48 @@
+name: Open source metrics
+
+# On the 1st of every month, opens an issue here with last month's numbers for
+# our public repos: stars, forks, issues and merged PRs from people outside the
+# maintainers, new and returning contributors, and npm downloads. The point is
+# to see whether outside use grows once a contributor event is over.
+on:
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+    inputs:
+      month:
+        description: Month to report on, as YYYY-MM. Leave empty for last month.
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MONTH: ${{ inputs.month }}
+        run: |
+          set -euo pipefail
+          if [ -n "${MONTH:-}" ] && ! [[ "$MONTH" =~ ^20[0-9]{2}-(0[1-9]|1[0-2])$ ]]; then
+            echo "::error::month must look like 2026-11"
+            exit 1
+          fi
+          bash .github/scripts/oss-metrics.sh ${MONTH:+"$MONTH"} > report.md
+          head -n 1 report.md | sed 's/^## //' > title.txt
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh label create oss-metrics --repo "$REPO" --color 0E8A16 \
+            --description "Monthly open source metrics report" 2>/dev/null || true
+          gh issue create --repo "$REPO" --title "$(cat title.txt)" --body-file report.md --label oss-metrics

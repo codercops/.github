@@ -1,0 +1,6 @@
+# Default for every public codercops repo that has no FUNDING.yml of its own.
+# Add codercops to the github list once the org's GitHub Sponsors profile is approved.
+github: [anurag629]
+custom:
+  - "https://buymeacoffee.com/anurag629"
+  - "https://www.paypal.com/paypalme/codercops"

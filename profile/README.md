@@ -37,20 +37,23 @@ Free, structured roadmaps you can follow at your own pace. Log your days with `/
 
 ---
 
-### 🎃 Hacktoberfest 2026
+### 🏆 Monthly contributor leaderboard
 
-Our projects are taking part in Hacktoberfest this October, and we've lined up beginner-friendly issues in each one. Start with the pinned guide in the repo you like:
+Every month has its own [leaderboard](https://oss.codercops.com/leaderboard). It counts merged PRs labeled `codercops-accepted` across our four repos, and the top 5 get a shout-out on our X and LinkedIn pages. Everyone on it gets a card to share. Only PRs for issues that were assigned to you count, and the full rules (AI tools, spam, reviews) are in each repo's CONTRIBUTING.md.
 
-- **OGCOPS:** [start here](https://github.com/codercops/ogcops/issues/88). New template ideas are in [#5](https://github.com/codercops/ogcops/issues/5).
-- **ChatCops:** [start here](https://github.com/codercops/chatcops/issues/73)
-- **toolbelt:** [start here](https://github.com/codercops/toolbelt/issues/101). Build a whole new tool from the [`new tool`](https://github.com/codercops/toolbelt/issues?q=is%3Aissue+is%3Aopen+label%3A%22new+tool%22) issues.
-- **discord-bot:** the bot behind our Discord server, a small TypeScript Worker. [Open issues](https://github.com/codercops/discord-bot/issues?q=is%3Aissue+is%3Aopen+no%3Aassignee).
+Good places to start:
 
-Or browse every [open `hacktoberfest` issue](https://github.com/search?q=org%3Acodercops+label%3Ahacktoberfest+state%3Aopen+no%3Aassignee&type=issues) across the org. Comment on an issue to get assigned before you start.
+- **OGCOPS:** new template ideas are in [#5](https://github.com/codercops/ogcops/issues/5).
+- **toolbelt:** build a whole new tool from the [`new tool`](https://github.com/codercops/toolbelt/issues?q=is%3Aissue+is%3Aopen+label%3A%22new+tool%22) issues.
+- **ChatCops** and **discord-bot:** see the [`good first issue`](https://github.com/search?q=org%3Acodercops+label%3A%22good+first+issue%22+state%3Aopen+no%3Aassignee&type=issues) list.
 
-**Goodies:** CODERCOPS October 2026 is our own contributor program for this month. The top 5 contributors get a CODERCOPS T-shirt and stickers. You need at least 5 merged PRs labeled `hacktoberfest-accepted` across these four repos, merged between Oct 1 and Oct 31 (UTC). Ties go to whoever got there first. The [live leaderboard](https://oss.codercops.com/leaderboard/2026-10) shows where everyone stands, and everyone on it gets a card to share. It's on our [Discord](https://discord.gg/mpGdJyjaRQ) too.
+Thanks to everyone who took part in CODERCOPS October 2026. The [final results](https://oss.codercops.com/leaderboard/2026-10) stay online. Contributors who keep showing up can become maintainers, see [GOVERNANCE.md](https://github.com/codercops/.github/blob/main/GOVERNANCE.md).
 
-These goodies come from CODERCOPS through our own open source program. They're separate from Hacktoberfest, so anything Hacktoberfest itself gives out is a different thing with its own rules. Only PRs for issues that were assigned to you count, and the full rules (AI tools, spam, reviews) are in each repo's CONTRIBUTING.md.
+---
+
+### 💚 Support the projects
+
+The projects are free and MIT licensed, and CODERCOPS doesn't sell them. If they help you, you can [sponsor the maintainers](https://github.com/sponsors/anurag629). The money pays for review time and hosting, and our [funding.json](https://oss.codercops.com/funding.json) lists what we're raising for.
 
 ---
 
